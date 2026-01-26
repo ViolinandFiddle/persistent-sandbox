@@ -31,6 +31,7 @@ CONDA_VOLUME_NAME="sandbox-conda-${SANDBOX_NAME}"
 # Parse flags
 FORCE=false
 AUTO=false
+RESET_VOLUME=false
 
 # ------------------------------------------------------------------------------
 # HELP & VERSION
@@ -46,6 +47,7 @@ show_help() {
     echo "  -v, --version   Show version information"
     echo "  -f, --force     Overwrite existing configuration without prompting"
     echo "  --auto          Non-interactive mode with defaults"
+    echo "  --reset-volume  Destroys and re-creates the persistent package volume"
     echo ""
     echo "This script configures the development container."
     exit 0
@@ -63,6 +65,7 @@ while [[ $# -gt 0 ]]; do
         -v|--version) show_version ;;
         -f|--force) FORCE=true; shift ;;
         --auto) AUTO=true; shift ;;
+        --reset-volume) RESET_VOLUME=true; shift ;;
         *) echo "Unknown option: $1"; show_help ;;
     esac
 done
@@ -404,12 +407,58 @@ echo "✓ Saved: workspace.code-workspace"
 # ------------------------------------------------------------------------------
 
 echo ""
+echo ""
 echo "Checking Named Volume..."
 if docker volume ls --format "{{.Name}}" | grep -q "^${CONDA_VOLUME_NAME}$"; then
-    echo "  ✓ Volume exists: ${CONDA_VOLUME_NAME} (packages preserved)"
+    VOLUME_EXISTS=true
 else
+    VOLUME_EXISTS=false
+fi
+
+# RESET FLOW
+if [ "$VOLUME_EXISTS" = "true" ]; then
+    DO_RESET=$RESET_VOLUME
+
+    # Interactive Wizard Prompt
+    if [ "$DO_RESET" != "true" ] && [ "$AUTO" != "true" ]; then
+        echo "  Found existing volume: ${CONDA_VOLUME_NAME}"
+        read -p "  Reset (wipe) this volume? (y/N) [N]: " RESET_CHOICE
+        if [ "$RESET_CHOICE" = "y" ] || [ "$RESET_CHOICE" = "Y" ]; then
+            DO_RESET=true
+        fi
+    fi
+
+    if [ "$DO_RESET" = "true" ]; then
+        # SAFETY GUARD
+        echo ""
+        echo "⚠️  WARNING: DESTRUCTIVE ACTION"
+        echo "   You are about to DELETE the persistent volume '${CONDA_VOLUME_NAME}'."
+        echo "   ALL installed packages and environments in this volume will be LOST."
+        echo "   This cannot be undone."
+        
+        if [ "$FORCE" != "true" ]; then
+            echo ""
+            read -p "   Type 'DELETE' to confirm: " CONFIRMATION
+            if [ "$CONFIRMATION" != "DELETE" ]; then
+                echo "   ❌ Action cancelled. Volume preserved."
+                DO_RESET=false
+            fi
+        fi
+        
+        if [ "$DO_RESET" = "true" ]; then
+            echo "   Removing volume..."
+            docker volume rm "${CONDA_VOLUME_NAME}" > /dev/null
+            echo "   ✓ Volume removed."
+            VOLUME_EXISTS=false # Force checking/creation again
+        fi
+    fi
+fi
+
+if [ "$VOLUME_EXISTS" != "true" ]; then
     docker volume create "${CONDA_VOLUME_NAME}" > /dev/null
     echo "  ✓ Created volume: ${CONDA_VOLUME_NAME}"
+else
+    echo "  ✓ Volume exists: ${CONDA_VOLUME_NAME} (packages preserved)"
 fi
 
 # ------------------------------------------------------------------------------

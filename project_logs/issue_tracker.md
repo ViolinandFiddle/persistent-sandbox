@@ -112,6 +112,13 @@
 - **Root Cause**: `r-reactran` package is not available on `conda-forge` channel.
 - **Fix Applied**: Removed package from `addon-r.yml` and added custom CRAN installation step (`install.packages('ReacTran')`) to `Dockerfile`.
 
+### ISS-014: Stale Volume Persists Old Environment
+- **Status**: Fixed
+- **Severity**: High
+- **Platform**: All
+- **Root Cause**: Docker named volumes persist data across container rebuilds. If the Dockerfile is updated, the volume still contains the old Conda environment, preventing updates from appearing.
+- **Fix Applied**: Added `--reset-volume` flag (and interactive Wizard option) to setup scripts to allow explicit destruction of the stale volume with safety guards.
+
 ---
 
 ## Open Issues

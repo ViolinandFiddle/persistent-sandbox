@@ -96,3 +96,6 @@
 | 16:50:00 | UPDATE | `.devcontainer/Dockerfile` | Added custom CRAN install step for `ReacTran` (ISS-013) |
 | 16:55:00 | UPDATE | `project_logs/issue_tracker.md` | Documented build issues ISS-012 & ISS-013 |
 | 16:55:00 | UPDATE | `project_logs/changes.md` | Logged build stability fixes |
+| 17:15:00 | UPDATE | `setup.ps1` | Added `-ResetVolume` parameter and safe delete wizard (ISS-014) |
+| 17:15:00 | UPDATE | `setup.sh` | Added `--reset-volume` flag and safe delete wizard (ISS-014) |
+| 17:15:00 | UPDATE | `project_logs/issue_tracker.md` | Documented stale volume issue ISS-014 |

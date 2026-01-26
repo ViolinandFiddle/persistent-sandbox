@@ -19,7 +19,8 @@ param(
     [switch]$Force,
     [switch]$Help,
     [switch]$Version,
-    [switch]$Auto
+    [switch]$Auto,
+    [switch]$ResetVolume
 )
 
 $ScriptVersion = "2.0.0"
@@ -47,6 +48,7 @@ if ($Help) {
     Write-Host "  -Version    Show version information"
     Write-Host "  -Force      Overwrite existing configuration without prompting"
     Write-Host "  -Auto       Non-interactive mode with defaults"
+    Write-Host "  -ResetVolume Destroys and re-creates the persistent package volume"
     Write-Host ""
     Write-Host "This script configures the development container."
     exit 0
@@ -402,6 +404,44 @@ Write-Host ""
 Write-Host "Checking Named Volume..." -ForegroundColor Cyan
 try {
     $VolumeExists = docker volume ls --format "{{.Name}}" | Select-String -Pattern "^$CondaVolumeName$"
+    
+    # RESET FLOW
+    if ($VolumeExists) {
+        $DoReset = $ResetVolume
+
+        # Interactive Wizard Prompt
+        if (-not $DoReset -and -not $Auto) {
+            Write-Host "  Found existing volume: $CondaVolumeName" -ForegroundColor Yellow
+            $ResetChoice = Read-Host "  Reset (wipe) this volume? (y/N) [N]"
+            if ($ResetChoice -match "^[Yy]$") { $DoReset = $true }
+        }
+
+        if ($DoReset) {
+            # SAFETY GUARD
+            Write-Host ""
+            Write-Host "⚠️  WARNING: DESTRUCTIVE ACTION" -ForegroundColor Red
+            Write-Host "   You are about to DELETE the persistent volume '$CondaVolumeName'." -ForegroundColor Red
+            Write-Host "   ALL installed packages and environments in this volume will be LOST." -ForegroundColor Red
+            Write-Host "   This cannot be undone." -ForegroundColor Red
+            
+            if (-not $Force) {
+                Write-Host ""
+                $Confirmation = Read-Host "   Type 'DELETE' to confirm"
+                if ($Confirmation -ne "DELETE") {
+                    Write-Host "   ❌ Action cancelled. Volume preserved." -ForegroundColor Green
+                    $DoReset = $false
+                }
+            }
+            
+            if ($DoReset) {
+                Write-Host "   Removing volume..." -ForegroundColor Cyan
+                docker volume rm $CondaVolumeName | Out-Null
+                Write-Host "   ✓ Volume removed." -ForegroundColor Green
+                $VolumeExists = $null # Force checking/creation again
+            }
+        }
+    }
+
     if (-not $VolumeExists) {
         docker volume create $CondaVolumeName | Out-Null
         Write-Host "  Created volume: $CondaVolumeName" -ForegroundColor Green
