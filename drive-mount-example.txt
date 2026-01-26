@@ -9,5 +9,5 @@ From SSH (WSL)
 From Windows Native
 
 "mounts": [
-  "source=C:/Users/tjdil/gdrive/ND_Graduate_School/Python/container-projects,target=/workspaces/projects,type=bind,consistency=cached"
+  "source=F:/Google_Drive_Live/ND_Graduate_School/Python/container-projects,target=/workspaces/projects,type=bind,consistency=cached"
 ]
