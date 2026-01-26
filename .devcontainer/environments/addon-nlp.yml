@@ -1,0 +1,47 @@
+# ==============================================================================
+# ADD-ON: Natural Language Processing
+# ==============================================================================
+# NLP tools for text processing, embeddings, and language models.
+# Pairs well with the AI tier for using Transformers.
+#
+# Size: ~400MB | Build time: ~2-3 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+dependencies:
+  # ---------------------------------------------------------------------------
+  # Core NLP Libraries
+  # ---------------------------------------------------------------------------
+  - spacy # Industrial-strength NLP (tokenization, NER, POS)
+  - nltk # Natural Language Toolkit (academic NLP)
+
+  # ---------------------------------------------------------------------------
+  # Text Processing
+  # ---------------------------------------------------------------------------
+  - regex # Advanced regular expressions
+  - ftfy # Fix text encoding issues
+  - unidecode # Unicode to ASCII transliteration
+  - chardet # Character encoding detection
+
+  # ---------------------------------------------------------------------------
+  # Embeddings & Similarity
+  # ---------------------------------------------------------------------------
+  - gensim # Topic modeling and word embeddings (Word2Vec, Doc2Vec)
+  - faiss-cpu # Fast similarity search (Facebook AI)
+
+  # ---------------------------------------------------------------------------
+  # pip-only packages
+  # ---------------------------------------------------------------------------
+  - pip
+  - pip:
+      # Sentence embeddings (semantic search, clustering)
+      - sentence-transformers
+      # Language detection
+      - langdetect
+      # Text cleaning
+      - cleantext
+      # Keyword extraction
+      - keybert
+      # Summarization (extractive)
+      - sumy

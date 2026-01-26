@@ -1,0 +1,65 @@
+# ==============================================================================
+# CORE TIER - Essential Scientific Stack
+# ==============================================================================
+# The foundation for all data science work. Includes Jupyter, core scientific
+# libraries, and essential development tools. All tiers build on this.
+#
+# Size: ~500MB | Build time: ~2-3 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+dependencies:
+  # ---------------------------------------------------------------------------
+  # Jupyter Ecosystem (the development environment)
+  # ---------------------------------------------------------------------------
+  - jupyter # Classic notebook interface
+  - jupyterlab # Modern IDE-like interface
+  - ipykernel # Python kernel for Jupyter
+  - ipywidgets # Interactive widgets (sliders, buttons, etc.)
+  - nbconvert # Export notebooks to HTML, PDF, etc.
+
+  # ---------------------------------------------------------------------------
+  # Core Scientific Stack (the fundamentals)
+  # ---------------------------------------------------------------------------
+  - numpy # N-dimensional arrays - foundation of scientific Python
+  - pandas # DataFrames for tabular data (like Excel, but better)
+  - scipy # Scientific algorithms (optimization, integration, etc.)
+  - sympy # Symbolic math (like Mathematica/Wolfram Alpha)
+
+  # ---------------------------------------------------------------------------
+  # Basic Visualization
+  # ---------------------------------------------------------------------------
+  - matplotlib # The standard plotting library
+  - seaborn # Statistical visualizations (prettier matplotlib)
+  - ipympl # Interactive matplotlib in Jupyter
+
+  # ---------------------------------------------------------------------------
+  # Data I/O (reading and writing data files)
+  # ---------------------------------------------------------------------------
+  - openpyxl # Excel file support (.xlsx)
+  - h5py # HDF5 file support (large scientific datasets)
+  - pyarrow # Parquet/Arrow format (fast columnar storage)
+
+  # ---------------------------------------------------------------------------
+  # Developer Tools
+  # ---------------------------------------------------------------------------
+  - ruff # Fast Python linter and formatter
+  - requests # HTTP library for APIs
+  - tqdm # Progress bars for loops
+  - tabulate # Pretty-print tables
+
+  # ---------------------------------------------------------------------------
+  # Graph Analysis (fundamental for many domains)
+  # ---------------------------------------------------------------------------
+  - networkx # Graph/network analysis
+
+  # ---------------------------------------------------------------------------
+  # pip-only packages (not available via conda)
+  # ---------------------------------------------------------------------------
+  - pip
+  - pip:
+      - tclab # Temperature Control Lab (educational)
+      - simpy # Discrete event simulation
+      - control # Control systems library
+      - jupyter-book # Build books from notebooks

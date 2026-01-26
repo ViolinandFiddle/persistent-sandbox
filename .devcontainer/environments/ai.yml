@@ -1,0 +1,41 @@
+# ==============================================================================
+# AI TIER - Deep Learning (extends ml.yml)
+# ==============================================================================
+# GPU-accelerated deep learning frameworks. Includes PyTorch, JAX, and
+# Transformers for modern AI/ML workflows. Falls back to CPU if no GPU.
+#
+# CUDA: 12.4 (Jan 2026 - latest stable)
+# Python: Compatible with 3.11, 3.12, 3.13
+#
+# Size: ~3GB additional | Build time: ~5-8 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  # ---------------------------------------------------------------------------
+  # PyTorch Ecosystem (most popular DL framework)
+  # ---------------------------------------------------------------------------
+  # GPU support via pytorch-cuda; falls back to CPU if no NVIDIA GPU detected
+  - pytorch>=2.2 # Core deep learning framework
+  - torchvision # Computer vision models and transforms
+  - torchaudio # Audio processing
+  - pytorch-cuda=12.4 # CUDA 12.4 support (Jan 2026 latest)
+
+  # ---------------------------------------------------------------------------
+  # Hugging Face Ecosystem (NLP and beyond)
+  # ---------------------------------------------------------------------------
+  - pip
+  - pip:
+      # Core Transformers library - access to thousands of pretrained models
+      - transformers>=4.38
+      # PyTorch Lightning - structured training loops
+      - lightning>=2.2
+      # Einops - readable tensor operations
+      - einops
+      # Accelerate - easy distributed training
+      - accelerate
+      # Datasets - Hugging Face dataset library
+      - datasets

@@ -1,0 +1,44 @@
+# ==============================================================================
+# ADD-ON: Advanced Visualization
+# ==============================================================================
+# Interactive and publication-quality visualization libraries beyond the
+# basic matplotlib/seaborn included in core.yml.
+#
+# Size: ~200MB | Build time: ~1-2 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+dependencies:
+  # ---------------------------------------------------------------------------
+  # Interactive Web-Based Plotting
+  # ---------------------------------------------------------------------------
+  - plotly # Interactive plots (zoom, hover, export)
+  - bokeh # Interactive visualizations for web browsers
+  - altair # Declarative statistical visualization (Vega-Lite)
+
+  # ---------------------------------------------------------------------------
+  # Dashboards & Apps
+  # ---------------------------------------------------------------------------
+  - streamlit # Turn scripts into web apps instantly
+  - panel # Dashboard and app framework (HoloViz)
+  - voila # Turn Jupyter notebooks into standalone web apps
+
+  # ---------------------------------------------------------------------------
+  # Advanced Plotting
+  # ---------------------------------------------------------------------------
+  - holoviews # High-level plotting API
+  - hvplot # HoloViews plotting for pandas/xarray
+  - datashader # Render billions of points efficiently
+
+  # ---------------------------------------------------------------------------
+  # Geographic Visualization
+  # ---------------------------------------------------------------------------
+  - folium # Leaflet.js maps in Python
+  - geopandas # Geographic data in pandas DataFrames
+  - contextily # Add basemaps to geopandas plots
+
+  # ---------------------------------------------------------------------------
+  # Scientific Visualization
+  # ---------------------------------------------------------------------------
+  - pyvista # 3D visualization and mesh analysis

@@ -1,0 +1,40 @@
+# ==============================================================================
+# ML TIER - Machine Learning (extends core.yml)
+# ==============================================================================
+# Classical machine learning algorithms and statistical modeling. This tier
+# is for users who need ML but don't need deep learning / GPU compute.
+#
+# Size: ~300MB additional | Build time: ~2 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+dependencies:
+  # ---------------------------------------------------------------------------
+  # Core Machine Learning
+  # ---------------------------------------------------------------------------
+  - scikit-learn # The standard ML library (classification, regression, etc.)
+  - xgboost # Gradient boosting (top Kaggle algorithm)
+  - lightgbm # Fast gradient boosting (Microsoft)
+
+  # ---------------------------------------------------------------------------
+  # Statistical Modeling
+  # ---------------------------------------------------------------------------
+  - statsmodels # Statistical models, tests, and time series
+  - patsy # Formula interface for statistical models (R-style)
+
+  # ---------------------------------------------------------------------------
+  # Feature Engineering & Preprocessing
+  # ---------------------------------------------------------------------------
+  - category_encoders # Encoding categorical variables
+  - imbalanced-learn # Handle imbalanced datasets (SMOTE, etc.)
+
+  # ---------------------------------------------------------------------------
+  # Model Interpretation
+  # ---------------------------------------------------------------------------
+  - shap # Explain model predictions (Shapley values)
+
+  # ---------------------------------------------------------------------------
+  # Hyperparameter Optimization
+  # ---------------------------------------------------------------------------
+  - optuna # Modern hyperparameter tuning

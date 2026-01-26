@@ -1,0 +1,42 @@
+# ==============================================================================
+# FULL TIER - Big Data & Performance (extends ai.yml)
+# ==============================================================================
+# Large-scale data processing and performance optimization. Includes parallel
+# computing, modern DataFrame libraries, and JIT compilation.
+#
+# Size: ~500MB additional | Build time: ~2-3 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+dependencies:
+  # ---------------------------------------------------------------------------
+  # Parallel & Distributed Computing
+  # ---------------------------------------------------------------------------
+  - dask # Parallel computing with familiar APIs (pandas-like)
+  - dask-ml # Scalable machine learning with Dask
+
+  # ---------------------------------------------------------------------------
+  # Modern DataFrame Libraries (faster than pandas for big data)
+  # ---------------------------------------------------------------------------
+  - polars # Blazing fast DataFrames (Rust-based)
+
+  # ---------------------------------------------------------------------------
+  # Performance Optimization
+  # ---------------------------------------------------------------------------
+  - numba # JIT compiler for Python (speed up loops)
+  - cython # Compile Python to C for performance
+
+  # ---------------------------------------------------------------------------
+  # Image Processing
+  # ---------------------------------------------------------------------------
+  - scikit-image # Image processing algorithms
+  - pillow # Image file handling (PIL fork)
+  - opencv # Computer vision library
+
+  # ---------------------------------------------------------------------------
+  # Additional I/O for big data
+  # ---------------------------------------------------------------------------
+  - fastparquet # Alternative Parquet implementation
+  - python-snappy # Snappy compression (fast)
+  - lz4 # LZ4 compression (very fast)

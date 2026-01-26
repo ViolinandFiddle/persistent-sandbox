@@ -1,0 +1,72 @@
+# ==============================================================================
+# ADD-ON: R Language Support
+# ==============================================================================
+# R environment for Python developers learning R. Includes IRkernel for
+# Jupyter integration, tidyverse for data wrangling, and ggplot2 for viz.
+#
+# This is an ADD-ON - it extends your Python environment, not replaces it.
+# Select this during setup if you want to use R alongside Python.
+#
+# Size: ~500MB | Build time: ~3-4 min
+# ==============================================================================
+name: sandbox
+channels:
+  - conda-forge
+  - r
+dependencies:
+  # ---------------------------------------------------------------------------
+  # R Core
+  # ---------------------------------------------------------------------------
+  - r-base>=4.3 # R language runtime
+
+  # ---------------------------------------------------------------------------
+  # Jupyter Integration (use R in Jupyter notebooks)
+  # ---------------------------------------------------------------------------
+  - r-irkernel # R kernel for Jupyter
+
+  # ---------------------------------------------------------------------------
+  # Tidyverse (modern R data science workflow)
+  # ---------------------------------------------------------------------------
+  # This is like pandas + more for R - the modern way to do data science in R
+  - r-tidyverse # Includes: dplyr, ggplot2, tidyr, readr, purrr, tibble
+
+  # ---------------------------------------------------------------------------
+  # Data Manipulation
+  # ---------------------------------------------------------------------------
+  - r-data.table # Fast data manipulation (like polars for R)
+  - r-dtplyr # Use data.table backend with dplyr syntax
+
+  # ---------------------------------------------------------------------------
+  # Visualization
+  # ---------------------------------------------------------------------------
+  - r-ggplot2 # Grammar of graphics (R's matplotlib + seaborn)
+  - r-plotly # Interactive plots
+  - r-htmlwidgets # HTML widgets for interactive output
+
+  # ---------------------------------------------------------------------------
+  # Statistics (R's strength)
+  # ---------------------------------------------------------------------------
+  - r-lme4 # Mixed effects models
+  - r-broom # Tidy model outputs (like sklearn's format)
+  - r-caret # ML wrapper (like sklearn for R)
+  - r-randomforest # Random forest implementation
+
+  # ---------------------------------------------------------------------------
+  # Reporting & Documents
+  # ---------------------------------------------------------------------------
+  - r-rmarkdown # R Markdown documents (like Jupyter for R)
+  - r-knitr # Dynamic report generation
+  - r-shiny # Interactive web applications
+
+  # ---------------------------------------------------------------------------
+  # Python-R Interoperability
+  # ---------------------------------------------------------------------------
+  - rpy2 # Call R from Python
+  - r-reticulate # Call Python from R
+
+  # ---------------------------------------------------------------------------
+  # Development Tools
+  # ---------------------------------------------------------------------------
+  - r-devtools # Package development utilities
+  - r-testthat # Unit testing framework
+  - r-roxygen2 # Documentation generation
