@@ -119,6 +119,13 @@
 - **Root Cause**: Docker named volumes persist data across container rebuilds. If the Dockerfile is updated, the volume still contains the old Conda environment, preventing updates from appearing.
 - **Fix Applied**: Added `--reset-volume` flag (and interactive Wizard option) to setup scripts to allow explicit destruction of the stale volume with safety guards.
 
+### ISS-015: Manual Volume Creation Results in Empty Environment
+- **Status**: Fixed
+- **Severity**: Critical
+- **Platform**: All
+- **Root Cause**: Setup scripts were manually running `docker volume create`. This creates an empty volume. When mounted over `/opt/conda`, it hid the pre-installed packages. Docker only copies image content to a volume if *Docker* itself creates the volume during container startup.
+- **Fix Applied**: Removed explicit `docker volume create` from setup scripts. Scripts now only *delete* the volume (if requested), but rely on Docker to safely create/populate it on first run.
+
 ---
 
 ## Open Issues

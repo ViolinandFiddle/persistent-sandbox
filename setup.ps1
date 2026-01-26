@@ -177,7 +177,8 @@ if (-not $Auto) {
     if ($AddonNLP -eq "true") { $SelectedAddons += "NLP" }
     if ($SelectedAddons.Count -gt 0) {
         Write-Host "  Selected: $($SelectedAddons -join ', ')" -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "  Selected: None" -ForegroundColor DarkGray
     }
 }
@@ -243,14 +244,14 @@ else {
 # ------------------------------------------------------------------------------
 
 $Config = @{
-    python_version   = $PythonVersion
-    build_type       = $BuildType
-    install_latex    = ($InstallLatex -eq "true")
-    addon_r          = ($AddonR -eq "true")
-    addon_viz        = ($AddonViz -eq "true")
-    addon_nlp        = ($AddonNLP -eq "true")
+    python_version     = $PythonVersion
+    build_type         = $BuildType
+    install_latex      = ($InstallLatex -eq "true")
+    addon_r            = ($AddonR -eq "true")
+    addon_viz          = ($AddonViz -eq "true")
+    addon_nlp          = ($AddonNLP -eq "true")
     discovered_folders = $Folders
-    created_at       = (Get-Date -Format "o")
+    created_at         = (Get-Date -Format "o")
 } | ConvertTo-Json -Depth 3
 $Config | Out-File -FilePath $ConfigFile -Encoding UTF8
 Write-Host ""
@@ -443,15 +444,18 @@ try {
     }
 
     if (-not $VolumeExists) {
-        docker volume create $CondaVolumeName | Out-Null
-        Write-Host "  Created volume: $CondaVolumeName" -ForegroundColor Green
+        # DO NOT manually create the volume. 
+        # If we create it here, it starts empty.
+        # We must let Docker create it during container startup so it copies 
+        # the /opt/conda contents from the image into the volume.
+        Write-Host "  Volume will be created by Docker on first run (preserving image packages)." -ForegroundColor Green
     }
     else {
         Write-Host "  Volume exists: $CondaVolumeName (packages preserved)" -ForegroundColor Green
     }
 }
 catch {
-    Write-Host "  Volume will be created on first run." -ForegroundColor Yellow
+    Write-Host "  Volume check skipped." -ForegroundColor Yellow
 }
 
 # ------------------------------------------------------------------------------

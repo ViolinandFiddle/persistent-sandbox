@@ -455,8 +455,11 @@ if [ "$VOLUME_EXISTS" = "true" ]; then
 fi
 
 if [ "$VOLUME_EXISTS" != "true" ]; then
-    docker volume create "${CONDA_VOLUME_NAME}" > /dev/null
-    echo "  ✓ Created volume: ${CONDA_VOLUME_NAME}"
+    # DO NOT manually create the volume.
+    # If we create it here, it starts empty.
+    # We must let Docker create it during container startup so it copies
+    # the /opt/conda contents from the image into the volume.
+    echo "  ✓ Volume will be created by Docker on first run (preserving image packages)"
 else
     echo "  ✓ Volume exists: ${CONDA_VOLUME_NAME} (packages preserved)"
 fi

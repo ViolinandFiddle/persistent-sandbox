@@ -99,3 +99,10 @@
 | 17:15:00 | UPDATE | `setup.ps1` | Added `-ResetVolume` parameter and safe delete wizard (ISS-014) |
 | 17:15:00 | UPDATE | `setup.sh` | Added `--reset-volume` flag and safe delete wizard (ISS-014) |
 | 17:15:00 | UPDATE | `project_logs/issue_tracker.md` | Documented stale volume issue ISS-014 |
+
+### Phase 9: Volume Initialization Fix
+| Time (UTC) | Action | File | Description |
+|------------|--------|------|-------------|
+| 17:35:00 | UPDATE | `setup.ps1` | Removed manual `docker volume create` (ISS-015) |
+| 17:35:00 | UPDATE | `setup.sh` | Removed manual `docker volume create` (ISS-015) |
+| 17:35:00 | UPDATE | `project_logs/issue_tracker.md` | Documented empty volume bug ISS-015 |
