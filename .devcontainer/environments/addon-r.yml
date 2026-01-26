@@ -1,5 +1,5 @@
 # ==============================================================================
-# ADD-ON: R Language Support
+# ADD-ON: R Language Support (PhD/Chem-E Edition)
 # ==============================================================================
 # R environment for Python developers learning R. Includes IRkernel for
 # Jupyter integration, tidyverse for data wrangling, and ggplot2 for viz.
@@ -7,7 +7,7 @@
 # This is an ADD-ON - it extends your Python environment, not replaces it.
 # Select this during setup if you want to use R alongside Python.
 #
-# Size: ~500MB | Build time: ~3-4 min
+# Size: ~650MB | Build time: ~4-5 min
 # ==============================================================================
 name: sandbox
 channels:
@@ -17,12 +17,22 @@ dependencies:
   # ---------------------------------------------------------------------------
   # R Core
   # ---------------------------------------------------------------------------
-  - r-base>=4.3 # R language runtime
+  - r-base>=4.4 # R language runtime (Updated to latest stable)
 
   # ---------------------------------------------------------------------------
   # Jupyter Integration (use R in Jupyter notebooks)
   # ---------------------------------------------------------------------------
   - r-irkernel # R kernel for Jupyter
+  - r-languageserver # Essential for Antigravity/VS Code Autocomplete
+  - r-httpgd # High-performance plot viewer for IDEs
+
+  # ---------------------------------------------------------------------------
+  # Chemical Engineering & Transport Modeling (The PhD Stack)
+  # ---------------------------------------------------------------------------
+  - r-desolve # ODE/PDE solvers for membrane flux
+  # - r-reactran (Installed via Dockerfile: missing from conda-forge)
+  - r-minpack.lm # Non-linear least squares fitting
+  - r-units # Dimensional analysis and unit safety
 
   # ---------------------------------------------------------------------------
   # Tidyverse (modern R data science workflow)
@@ -42,13 +52,16 @@ dependencies:
   - r-ggplot2 # Grammar of graphics (R's matplotlib + seaborn)
   - r-plotly # Interactive plots
   - r-htmlwidgets # HTML widgets for interactive output
+  - r-patchwork # Combine plots easily (like subplots)
 
   # ---------------------------------------------------------------------------
-  # Statistics (R's strength)
+  # Statistics & Machine Learning (R's strength)
   # ---------------------------------------------------------------------------
-  - r-lme4 # Mixed effects models
+  - r-tidymodels # Modern ML pipeline (The "Scikit-Learn" of R)
+  - r-xgboost # Gradient boosting (High performance)
+  - r-lme4 # Mixed effects models (Hierarchical data)
   - r-broom # Tidy model outputs (like sklearn's format)
-  - r-caret # ML wrapper (like sklearn for R)
+  - r-caret # ML wrapper (Classic/Legacy)
   - r-randomforest # Random forest implementation
 
   # ---------------------------------------------------------------------------
@@ -57,12 +70,13 @@ dependencies:
   - r-rmarkdown # R Markdown documents (like Jupyter for R)
   - r-knitr # Dynamic report generation
   - r-shiny # Interactive web applications
+  - r-kableextra # Publication-quality tables
 
   # ---------------------------------------------------------------------------
   # Python-R Interoperability
   # ---------------------------------------------------------------------------
-  - rpy2 # Call R from Python
-  - r-reticulate # Call Python from R
+  # rpy2 removed (Requires Python installation inside this env)
+  - r-reticulate # Call your EXTERNAL Python env from R
 
   # ---------------------------------------------------------------------------
   # Development Tools
@@ -70,3 +84,4 @@ dependencies:
   - r-devtools # Package development utilities
   - r-testthat # Unit testing framework
   - r-roxygen2 # Documentation generation
+  - r-renv # Project-local dependency management (Vital for PhD)

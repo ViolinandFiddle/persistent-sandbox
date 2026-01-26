@@ -98,6 +98,20 @@
 - **Root Cause**: CUDA 12.1 was outdated for January 2026.
 - **Fix Applied**: Updated to CUDA 12.4 in `ai.yml` for current PyTorch/JAX compatibility.
 
+### ISS-012: PyArrow Build Failure on Python 3.13
+- **Status**: Fixed
+- **Severity**: Critical
+- **Platform**: All
+- **Root Cause**: Pip resolution backtracking to ancient `pyarrow` versions (<7.0) which demand `numpy==1.19.4` (incompatible with Python 3.13).
+- **Fix Applied**: Explicitly pinned `pyarrow>=16.0.0` in `ai.yml` to force modern, compatible versions.
+
+### ISS-013: Missing R-Reactran Package
+- **Status**: Fixed
+- **Severity**: High
+- **Platform**: All
+- **Root Cause**: `r-reactran` package is not available on `conda-forge` channel.
+- **Fix Applied**: Removed package from `addon-r.yml` and added custom CRAN installation step (`install.packages('ReacTran')`) to `Dockerfile`.
+
 ---
 
 ## Open Issues

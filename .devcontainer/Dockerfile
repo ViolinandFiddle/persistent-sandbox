@@ -77,16 +77,16 @@ RUN mv /usr/bin/git /usr/bin/.git-real \
 RUN if [ "$INSTALL_LATEX" = "true" ]; then \
     echo "📦 Installing LaTeX for PDF export..." && \
     apt-get update && apt-get install -y --no-install-recommends \
-        texlive-xetex \
-        texlive-fonts-recommended \
-        texlive-fonts-extra \
-        texlive-latex-extra \
-        texlive-plain-generic \
-        texlive-science \
-        lmodern \
-        fonts-liberation \
-        pandoc \
-        latexmk \
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-extra \
+    texlive-plain-generic \
+    texlive-science \
+    lmodern \
+    fonts-liberation \
+    pandoc \
+    latexmk \
     && rm -rf /var/lib/apt/lists/*; \
     fi
 
@@ -155,6 +155,8 @@ RUN if [ "$ADDON_R" = "true" ]; then \
     echo "📦 [Add-on] Installing R environment with IRkernel..." && \
     mamba env update -n sandbox -f /tmp/environments/addon-r.yml && \
     mamba clean -afy && \
+    # Install ReacTran from CRAN (missing on conda-forge)
+    ${CONDA_DIR}/envs/sandbox/bin/Rscript -e "install.packages('ReacTran', repos='http://cran.us.r-project.org')" && \
     # Register R kernel for Jupyter
     ${CONDA_DIR}/envs/sandbox/bin/Rscript -e "IRkernel::installspec(user = FALSE, name = 'ir', displayname = 'R (Sandbox)')"; \
     fi

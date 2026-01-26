@@ -84,3 +84,15 @@
 | 23:06:00 | UPDATE | `setup.ps1` | Made Docker volume name unique per sandbox folder |
 | 23:06:00 | UPDATE | `README.md` | Added glossary of technical terms (tmpfs, bind mount, etc.) |
 | 23:06:00 | UPDATE | `README.md` | Updated volume name references to show dynamic naming |
+
+## 2026-01-26
+
+### Phase 8: Build Stability Fixes
+
+| Time (UTC) | Action | File | Description |
+|------------|--------|------|-------------|
+| 16:40:00 | UPDATE | `.devcontainer/environments/ai.yml` | Pinned `pyarrow>=16.0.0` to fix Python 3.13 build error (ISS-012) |
+| 16:50:00 | UPDATE | `.devcontainer/environments/addon-r.yml` | Removed `r-reactran` (missing from conda-forge) (ISS-013) |
+| 16:50:00 | UPDATE | `.devcontainer/Dockerfile` | Added custom CRAN install step for `ReacTran` (ISS-013) |
+| 16:55:00 | UPDATE | `project_logs/issue_tracker.md` | Documented build issues ISS-012 & ISS-013 |
+| 16:55:00 | UPDATE | `project_logs/changes.md` | Logged build stability fixes |
