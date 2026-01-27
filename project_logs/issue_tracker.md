@@ -126,6 +126,20 @@
 - **Root Cause**: Setup scripts were manually running `docker volume create`. This creates an empty volume. When mounted over `/opt/conda`, it hid the pre-installed packages. Docker only copies image content to a volume if *Docker* itself creates the volume during container startup.
 - **Fix Applied**: Removed explicit `docker volume create` from setup scripts. Scripts now only *delete* the volume (if requested), but rely on Docker to safely create/populate it on first run.
 
+### ISS-016: tmpfs Mounts Fail on Docker Desktop for Windows
+- **Status**: Fixed
+- **Severity**: Critical
+- **Platform**: Windows
+- **Root Cause**: `type=tmpfs` is a Linux-only filesystem. Docker Desktop for Windows rejects these mounts, causing container startup failures with "invalid mount config" errors.
+- **Fix Applied**: Replaced `type=tmpfs` with `type=volume` (anonymous volume) for `.git` shadow mounts. Anonymous volumes create an empty directory that masks the underlying content, achieving the same security goal cross-platform.
+
+### ISS-017: Unconditional .git Shadow Mounts Break Non-Git Folders
+- **Status**: Fixed
+- **Severity**: High
+- **Platform**: All
+- **Root Cause**: Setup scripts applied `.git` shadow mounts to ALL sibling folders regardless of whether they contained a `.git` directory. For non-git folders, this created unnecessary mounts and could interfere with folder access.
+- **Fix Applied**: Added conditional logic to only apply `.git` shadow mounts for folders that actually contain a `.git` directory. Git status is now tracked per-folder during discovery.
+
 ---
 
 ## Open Issues

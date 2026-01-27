@@ -224,10 +224,11 @@ Get-ChildItem -Path $ParentDir -Directory | ForEach-Object {
     $DirName = $_.Name
     # Exclude the sandbox folder itself
     if ($DirName -ne $SandboxName) {
-        $Folders += $DirName
-        # Check if it's a git repo
-        $IsGit = if (Test-Path (Join-Path $_.FullName ".git")) { " (git)" } else { "" }
-        Write-Host "  Found: $DirName$IsGit" -ForegroundColor Green
+        # Check if it's a git repo and store both name and git status
+        $HasGit = Test-Path (Join-Path $_.FullName ".git")
+        $Folders += @{ Name = $DirName; HasGit = $HasGit }
+        $IsGitLabel = if ($HasGit) { " (git)" } else { "" }
+        Write-Host "  Found: $DirName$IsGitLabel" -ForegroundColor Green
     }
 }
 
@@ -275,14 +276,17 @@ $MountsList = @()
 # Add Named Volume for Conda environment persistence
 $MountsList += "        `"source=$CondaVolumeName,target=/opt/conda,type=volume`""
 
-# Add bind mounts for each sibling folder + shadow their .git directories
+# Add bind mounts for each sibling folder + conditionally shadow their .git directories
 foreach ($Folder in $Folders) {
+    $FolderName = $Folder.Name
     # Convert any backslashes to forward slashes for Docker
-    $EscapedFolder = $Folder -replace '\\', '/' -replace '"', '\"'
+    $EscapedFolder = $FolderName -replace '\\', '/' -replace '"', '\"'
     # Bind mount the folder
     $MountsList += "        `"source=`${localWorkspaceFolder}/../$EscapedFolder,target=/workspaces/$EscapedFolder,type=bind`""
-    # Shadow .git with tmpfs to prevent git operations (safety layer)
-    $MountsList += "        `"target=/workspaces/$EscapedFolder/.git,type=tmpfs`""
+    # Shadow .git with anonymous volume ONLY if folder is a git repo (prevents git ops + Windows compatible)
+    if ($Folder.HasGit) {
+        $MountsList += "        `"target=/workspaces/$EscapedFolder/.git,type=volume`""
+    }
 }
 
 # Join mounts
@@ -380,7 +384,8 @@ Write-Host "Generating workspace.code-workspace..." -ForegroundColor Cyan
 $WorkspaceFolders = @()
 $WorkspaceFolders += @{ name = "Sandbox"; path = "." }
 foreach ($Folder in $Folders) {
-    $WorkspaceFolders += @{ name = $Folder; path = "/workspaces/$Folder" }
+    $FolderName = $Folder.Name
+    $WorkspaceFolders += @{ name = $FolderName; path = "/workspaces/$FolderName" }
 }
 
 $WorkspaceContent = @{

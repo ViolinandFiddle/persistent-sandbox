@@ -106,3 +106,16 @@
 | 17:35:00 | UPDATE | `setup.ps1` | Removed manual `docker volume create` (ISS-015) |
 | 17:35:00 | UPDATE | `setup.sh` | Removed manual `docker volume create` (ISS-015) |
 | 17:35:00 | UPDATE | `project_logs/issue_tracker.md` | Documented empty volume bug ISS-015 |
+
+## 2026-01-27
+
+### Phase 10: Windows Compatibility Fix
+
+| Time (UTC) | Action | File | Description |
+|------------|--------|------|-------------|
+| 19:57:00 | UPDATE | `setup.ps1` | Replaced `type=tmpfs` with `type=volume` for .git shadow mounts (ISS-016) |
+| 19:57:00 | UPDATE | `setup.ps1` | Added conditional .git mount logic - only for actual git repos (ISS-017) |
+| 19:57:00 | UPDATE | `setup.sh` | Replaced `type=tmpfs` with `type=volume` for .git shadow mounts (ISS-016) |
+| 19:57:00 | UPDATE | `setup.sh` | Added conditional .git mount logic - only for actual git repos (ISS-017) |
+| 19:57:00 | UPDATE | `project_logs/issue_tracker.md` | Documented ISS-016 and ISS-017 |
+| 19:57:00 | UPDATE | `project_logs/changes.md` | Added Phase 10 changelog |

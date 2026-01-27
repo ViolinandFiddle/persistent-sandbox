@@ -233,15 +233,18 @@ fi
 echo ""
 echo "Discovering Sibling Folders..."
 FOLDERS=()
+declare -A FOLDER_HAS_GIT  # Associative array to track git status
 for dir in "$PARENT_DIR"/*/; do
     dir_name=$(basename "$dir")
     # Exclude the sandbox folder itself
     if [ "$dir_name" != "$SANDBOX_NAME" ]; then
         FOLDERS+=("$dir_name")
-        # Check if it's a git repo
+        # Check if it's a git repo and store status
         if [ -d "$dir/.git" ]; then
+            FOLDER_HAS_GIT["$dir_name"]="true"
             echo "  Found: $dir_name (git)"
         else
+            FOLDER_HAS_GIT["$dir_name"]="false"
             echo "  Found: $dir_name"
         fi
     fi
@@ -290,14 +293,16 @@ MOUNTS_JSON=""
 # Add Named Volume for Conda environment persistence
 MOUNTS_JSON+="        \"source=${CONDA_VOLUME_NAME},target=/opt/conda,type=volume\""
 
-# Add bind mounts for each sibling folder + shadow their .git directories
+# Add bind mounts for each sibling folder + conditionally shadow their .git directories
 for folder in "${FOLDERS[@]}"; do
     escaped_folder=$(echo "$folder" | sed 's/\\/\\\\/g; s/"/\\"/g')
     MOUNTS_JSON+=","$'\n'
     MOUNTS_JSON+="        \"source=\${localWorkspaceFolder}/../${escaped_folder},target=/workspaces/${escaped_folder},type=bind\""
-    # Shadow .git with tmpfs for safety
-    MOUNTS_JSON+=","$'\n'
-    MOUNTS_JSON+="        \"target=/workspaces/${escaped_folder}/.git,type=tmpfs\""
+    # Shadow .git with anonymous volume ONLY if folder is a git repo (prevents git ops + Windows compatible)
+    if [ "${FOLDER_HAS_GIT[$folder]}" = "true" ]; then
+        MOUNTS_JSON+=","$'\n'
+        MOUNTS_JSON+="        \"target=/workspaces/${escaped_folder}/.git,type=volume\""
+    fi
 done
 
 # Build extensions list
