@@ -287,6 +287,10 @@ echo "Generating devcontainer.json..."
 # Ensure .devcontainer directory exists
 mkdir -p "$DEVCONTAINER_DIR"
 
+# Create empty directory for masking .git folders
+GIT_MASK_DIR="${DEVCONTAINER_DIR}/empty_git_mask"
+mkdir -p "$GIT_MASK_DIR"
+
 # Build mounts JSON array
 MOUNTS_JSON=""
 
@@ -298,10 +302,10 @@ for folder in "${FOLDERS[@]}"; do
     escaped_folder=$(echo "$folder" | sed 's/\\/\\\\/g; s/"/\\"/g')
     MOUNTS_JSON+=","$'\n'
     MOUNTS_JSON+="        \"source=\${localWorkspaceFolder}/../${escaped_folder},target=/workspaces/${escaped_folder},type=bind\""
-    # Shadow .git with anonymous volume ONLY if folder is a git repo (prevents git ops + Windows compatible)
+    # Shadow .git with empty read-only bind mount ONLY if folder is a git repo
     if [ "${FOLDER_HAS_GIT[$folder]}" = "true" ]; then
         MOUNTS_JSON+=","$'\n'
-        MOUNTS_JSON+="        \"target=/workspaces/${escaped_folder}/.git,type=volume\""
+        MOUNTS_JSON+="        \"source=\${localWorkspaceFolder}/.devcontainer/empty_git_mask,target=/workspaces/${escaped_folder}/.git,type=bind,readonly\""
     fi
 done
 

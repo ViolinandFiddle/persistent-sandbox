@@ -270,6 +270,12 @@ if (-not (Test-Path $DevContainerDir)) {
     New-Item -ItemType Directory -Path $DevContainerDir -Force | Out-Null
 }
 
+# Create empty directory for masking .git folders
+$GitMaskDir = Join-Path $DevContainerDir "empty_git_mask"
+if (-not (Test-Path $GitMaskDir)) {
+    New-Item -ItemType Directory -Path $GitMaskDir -Force | Out-Null
+}
+
 # Build mounts array
 $MountsList = @()
 
@@ -283,9 +289,9 @@ foreach ($Folder in $Folders) {
     $EscapedFolder = $FolderName -replace '\\', '/' -replace '"', '\"'
     # Bind mount the folder
     $MountsList += "        `"source=`${localWorkspaceFolder}/../$EscapedFolder,target=/workspaces/$EscapedFolder,type=bind`""
-    # Shadow .git with anonymous volume ONLY if folder is a git repo (prevents git ops + Windows compatible)
+    # Shadow .git with empty read-only bind mount ONLY if folder is a git repo
     if ($Folder.HasGit) {
-        $MountsList += "        `"target=/workspaces/$EscapedFolder/.git,type=volume`""
+        $MountsList += "        `"source=`${localWorkspaceFolder}/.devcontainer/empty_git_mask,target=/workspaces/$EscapedFolder/.git,type=bind,readonly`""
     }
 }
 
