@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Build essentials
     build-essential gcc g++ make cmake \
     # Network & security
-    git curl wget openssh-client ca-certificates gnupg2 \
+    git curl wget openssh-client ca-certificates gnupg2 socat iproute2 \
     # Archive tools
     zip unzip tar gzip bzip2 xz-utils \
     # Editors & utilities

@@ -169,7 +169,7 @@ if [ "$AUTO" != "true" ]; then
     echo ""
     echo "  Examples: 'R' or 'R V' or 'R V N' or press Enter for none"
     read -p "Enter add-ons [none]: " ADDON_CHOICE
-    
+
     # Parse space-separated choices
     for choice in $ADDON_CHOICE; do
         case "$choice" in
@@ -178,7 +178,7 @@ if [ "$AUTO" != "true" ]; then
             N|n) ADDON_NLP="true" ;;
         esac
     done
-    
+
     # Confirm selections
     SELECTED_ADDONS=""
     [ "$ADDON_R" = "true" ] && SELECTED_ADDONS+="R "
@@ -309,17 +309,8 @@ for folder in "${FOLDERS[@]}"; do
     fi
 done
 
-# Build extensions list
-EXTENSIONS_JSON='        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-toolsai.jupyter",
-        "ms-toolsai.vscode-jupyter-cell-tags",
-        "ms-toolsai.vscode-jupyter-slideshow"'
-
-# Add R extension if R add-on is selected
-if [ "$ADDON_R" = "true" ]; then
-    EXTENSIONS_JSON+=','$'\n''        "REditorSupport.r"'
-fi
+# Build extensions list (Empty by default per user request)
+EXTENSIONS_JSON=""
 
 # Build settings JSON - base settings for all configurations
 SETTINGS_JSON='"git.enabled": false,
@@ -444,7 +435,7 @@ if [ "$VOLUME_EXISTS" = "true" ]; then
         echo "   You are about to DELETE the persistent volume '${CONDA_VOLUME_NAME}'."
         echo "   ALL installed packages and environments in this volume will be LOST."
         echo "   This cannot be undone."
-        
+
         if [ "$FORCE" != "true" ]; then
             echo ""
             read -p "   Type 'DELETE' to confirm: " CONFIRMATION
@@ -453,7 +444,7 @@ if [ "$VOLUME_EXISTS" = "true" ]; then
                 DO_RESET=false
             fi
         fi
-        
+
         if [ "$DO_RESET" = "true" ]; then
             echo "   Removing volume..."
             docker volume rm "${CONDA_VOLUME_NAME}" > /dev/null
