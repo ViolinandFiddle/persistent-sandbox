@@ -164,7 +164,7 @@ if (-not $Auto) {
     Write-Host ""
     Write-Host "  Examples: 'R Q' or 'R V N Q C' or press Enter for none" -ForegroundColor DarkGray
     $AddonChoice = Read-Host "Enter add-ons [none]"
-    
+
     # Parse space-separated choices
     $AddonChoice.Split(' ') | ForEach-Object {
         switch ($_.ToUpper()) {
@@ -175,7 +175,7 @@ if (-not $Auto) {
             "C" { $AddonChrome = "true" }
         }
     }
-    
+
     # Confirm selections
     $SelectedAddons = @()
     if ($AddonR -eq "true") { $SelectedAddons += "R" }
@@ -308,21 +308,8 @@ foreach ($Folder in $Folders) {
 # Join mounts
 $MountsString = if ($MountsList.Count -gt 0) { $MountsList -join ",`n" } else { "" }
 
-# Build extensions list - Python, Jupyter, but NO Git extensions
-$ExtensionsList = @(
-    "        `"ms-python.python`"",
-    "        `"ms-python.vscode-pylance`"",
-    "        `"ms-toolsai.jupyter`"",
-    "        `"ms-toolsai.vscode-jupyter-cell-tags`"",
-    "        `"ms-toolsai.vscode-jupyter-slideshow`""
-)
-
-# Add R extension if R add-on is selected
-if ($AddonR -eq "true") {
-    $ExtensionsList += "        `"REditorSupport.r`""
-}
-
-$ExtensionsString = $ExtensionsList -join ",`n"
+# Build extensions list (Empty by default per user request)
+$ExtensionsString = ""
 
 # Build settings JSON - base settings for all configurations
 $SettingsContent = @"
@@ -428,7 +415,7 @@ Write-Host ""
 Write-Host "Checking Named Volume..." -ForegroundColor Cyan
 try {
     $VolumeExists = docker volume ls --format "{{.Name}}" | Select-String -Pattern "^$CondaVolumeName$"
-    
+
     # RESET FLOW
     if ($VolumeExists) {
         $DoReset = $ResetVolume
@@ -447,7 +434,7 @@ try {
             Write-Host "   You are about to DELETE the persistent volume '$CondaVolumeName'." -ForegroundColor Red
             Write-Host "   ALL installed packages and environments in this volume will be LOST." -ForegroundColor Red
             Write-Host "   This cannot be undone." -ForegroundColor Red
-            
+
             if (-not $Force) {
                 Write-Host ""
                 $Confirmation = Read-Host "   Type 'DELETE' to confirm"
@@ -456,7 +443,7 @@ try {
                     $DoReset = $false
                 }
             }
-            
+
             if ($DoReset) {
                 Write-Host "   Removing volume..." -ForegroundColor Cyan
                 docker volume rm $CondaVolumeName | Out-Null
@@ -467,9 +454,9 @@ try {
     }
 
     if (-not $VolumeExists) {
-        # DO NOT manually create the volume. 
+        # DO NOT manually create the volume.
         # If we create it here, it starts empty.
-        # We must let Docker create it during container startup so it copies 
+        # We must let Docker create it during container startup so it copies
         # the /opt/conda contents from the image into the volume.
         Write-Host "  Volume will be created by Docker on first run (preserving image packages)." -ForegroundColor Green
     }
