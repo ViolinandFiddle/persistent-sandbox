@@ -150,6 +150,8 @@ else { $BuildType = "core" }
 $AddonR = "false"
 $AddonViz = "false"
 $AddonNLP = "false"
+$AddonQuarto = "false"
+$AddonChrome = "false"
 
 if (-not $Auto) {
     Write-Host ""
@@ -157,8 +159,10 @@ if (-not $Auto) {
     Write-Host "  [R]   R Language    - R + IRkernel + tidyverse + ggplot2 (~500MB)"
     Write-Host "  [V]   Visualization - Plotly, Bokeh, Altair, Streamlit (~200MB)"
     Write-Host "  [N]   NLP Tools     - spaCy, NLTK, sentence-transformers (~400MB)"
+    Write-Host "  [Q]   Quarto        - Quarto CLI + TinyTeX + PDF Reader (~1GB)"
+    Write-Host "  [C]   Chrome        - Google Chrome for automation (~300MB)"
     Write-Host ""
-    Write-Host "  Examples: 'R' or 'R V' or 'R V N' or press Enter for none" -ForegroundColor DarkGray
+    Write-Host "  Examples: 'R Q' or 'R V N Q C' or press Enter for none" -ForegroundColor DarkGray
     $AddonChoice = Read-Host "Enter add-ons [none]"
     
     # Parse space-separated choices
@@ -167,6 +171,8 @@ if (-not $Auto) {
             "R" { $AddonR = "true" }
             "V" { $AddonViz = "true" }
             "N" { $AddonNLP = "true" }
+            "Q" { $AddonQuarto = "true" }
+            "C" { $AddonChrome = "true" }
         }
     }
     
@@ -175,6 +181,8 @@ if (-not $Auto) {
     if ($AddonR -eq "true") { $SelectedAddons += "R" }
     if ($AddonViz -eq "true") { $SelectedAddons += "Viz" }
     if ($AddonNLP -eq "true") { $SelectedAddons += "NLP" }
+    if ($AddonQuarto -eq "true") { $SelectedAddons += "Quarto" }
+    if ($AddonChrome -eq "true") { $SelectedAddons += "Chrome" }
     if ($SelectedAddons.Count -gt 0) {
         Write-Host "  Selected: $($SelectedAddons -join ', ')" -ForegroundColor Green
     }
@@ -251,6 +259,8 @@ $Config = @{
     addon_r            = ($AddonR -eq "true")
     addon_viz          = ($AddonViz -eq "true")
     addon_nlp          = ($AddonNLP -eq "true")
+    addon_quarto       = ($AddonQuarto -eq "true")
+    addon_chrome       = ($AddonChrome -eq "true")
     discovered_folders = $Folders
     created_at         = (Get-Date -Format "o")
 } | ConvertTo-Json -Depth 3
@@ -347,7 +357,9 @@ $DevContainerContent = @"
             "INSTALL_LATEX": "$InstallLatex",
             "ADDON_R": "$AddonR",
             "ADDON_VIZ": "$AddonViz",
-            "ADDON_NLP": "$AddonNLP"
+            "ADDON_NLP": "$AddonNLP",
+            "ADDON_QUARTO": "$AddonQuarto",
+            "ADDON_CHROME": "$AddonChrome"
         }
     },
     "mounts": [
@@ -482,7 +494,7 @@ Write-Host "Configuration:" -ForegroundColor Cyan
 Write-Host "  Python Version:  $PythonVersion"
 Write-Host "  Package Tier:    $BuildType"
 Write-Host "  LaTeX Support:   $InstallLatex"
-Write-Host "  Add-ons:         R=$AddonR, Viz=$AddonViz, NLP=$AddonNLP"
+Write-Host "  Add-ons:         R=$AddonR, Viz=$AddonViz, NLP=$AddonNLP, Quarto=$AddonQuarto, Chrome=$AddonChrome"
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Cyan
 Write-Host "  1. Open this folder in VS Code or Antigravity"

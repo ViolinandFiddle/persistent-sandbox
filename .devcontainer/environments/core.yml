@@ -24,22 +24,30 @@ dependencies:
   # ---------------------------------------------------------------------------
   - numpy # N-dimensional arrays - foundation of scientific Python
   - pandas # DataFrames for tabular data (like Excel, but better)
+  - polars # Blazing fast DataFrames (Rust-based)
   - scipy # Scientific algorithms (optimization, integration, etc.)
   - sympy # Symbolic math (like Mathematica/Wolfram Alpha)
+  - statsmodels # Statistical modeling and testing
 
   # ---------------------------------------------------------------------------
   # Basic Visualization
   # ---------------------------------------------------------------------------
   - matplotlib # The standard plotting library
   - seaborn # Statistical visualizations (prettier matplotlib)
+  - plotly # Dynamic, interactive visualizations
   - ipympl # Interactive matplotlib in Jupyter
 
   # ---------------------------------------------------------------------------
   # Data I/O (reading and writing data files)
   # ---------------------------------------------------------------------------
-  - openpyxl # Excel file support (.xlsx)
+  - patsy # Formula interface for statistical models (R-style)
+  - openpyxl # Excel file support (.xlsx reading)
+  - xlsxwriter # Excel file support (.xlsx writing)
   - h5py # HDF5 file support (large scientific datasets)
-  - pyarrow # Parquet/Arrow format (fast columnar storage)
+  - pyarrow>=17 # Optimized for Python 3.13 / Arrow 17+
+  - duckdb # Analytical SQL database (fast, embedded)
+  - sqlalchemy # Database toolkit and ORM
+  - psycopg2 # PostgreSQL adapter
 
   # ---------------------------------------------------------------------------
   # Developer Tools
@@ -48,6 +56,7 @@ dependencies:
   - requests # HTTP library for APIs
   - tqdm # Progress bars for loops
   - tabulate # Pretty-print tables
+  - typing-extensions # Backport of new type hints
 
   # ---------------------------------------------------------------------------
   # Graph Analysis (fundamental for many domains)
@@ -63,3 +72,5 @@ dependencies:
       - simpy # Discrete event simulation
       - control # Control systems library
       - jupyter-book # Build books from notebooks
+      - pdfreader # PDF processing
+      - phreeqpy # Python interface to PHREEQC

@@ -13,7 +13,6 @@ dependencies:
   # ---------------------------------------------------------------------------
   # Interactive Web-Based Plotting
   # ---------------------------------------------------------------------------
-  - plotly # Interactive plots (zoom, hover, export)
   - bokeh # Interactive visualizations for web browsers
   - altair # Declarative statistical visualization (Vega-Lite)
 

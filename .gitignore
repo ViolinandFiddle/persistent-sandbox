@@ -49,6 +49,8 @@ wheels/
 venv/
 ENV/
 env/
+envs/
+miniforge/
 .venv/
 
 # Jupyter

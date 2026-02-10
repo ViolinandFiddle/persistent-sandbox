@@ -159,6 +159,8 @@ fi
 ADDON_R="false"
 ADDON_VIZ="false"
 ADDON_NLP="false"
+ADDON_QUARTO="false"
+ADDON_CHROME="false"
 
 if [ "$AUTO" != "true" ]; then
     echo ""
@@ -166,8 +168,10 @@ if [ "$AUTO" != "true" ]; then
     echo "  [R]   R Language    - R + IRkernel + tidyverse + ggplot2 (~500MB)"
     echo "  [V]   Visualization - Plotly, Bokeh, Altair, Streamlit (~200MB)"
     echo "  [N]   NLP Tools     - spaCy, NLTK, sentence-transformers (~400MB)"
+    echo "  [Q]   Quarto        - Quarto CLI + TinyTeX + PDF Reader (~1GB)"
+    echo "  [C]   Chrome        - Google Chrome for automation (~300MB)"
     echo ""
-    echo "  Examples: 'R' or 'R V' or 'R V N' or press Enter for none"
+    echo "  Examples: 'R Q' or 'R V N Q C' or press Enter for none"
     read -p "Enter add-ons [none]: " ADDON_CHOICE
     
     # Parse space-separated choices
@@ -176,6 +180,8 @@ if [ "$AUTO" != "true" ]; then
             R|r) ADDON_R="true" ;;
             V|v) ADDON_VIZ="true" ;;
             N|n) ADDON_NLP="true" ;;
+            Q|q) ADDON_QUARTO="true" ;;
+            C|c) ADDON_CHROME="true" ;;
         esac
     done
     
@@ -184,6 +190,8 @@ if [ "$AUTO" != "true" ]; then
     [ "$ADDON_R" = "true" ] && SELECTED_ADDONS+="R "
     [ "$ADDON_VIZ" = "true" ] && SELECTED_ADDONS+="Viz "
     [ "$ADDON_NLP" = "true" ] && SELECTED_ADDONS+="NLP "
+    [ "$ADDON_QUARTO" = "true" ] && SELECTED_ADDONS+="Quarto "
+    [ "$ADDON_CHROME" = "true" ] && SELECTED_ADDONS+="Chrome "
     if [ -n "$SELECTED_ADDONS" ]; then
         echo "  Selected: $SELECTED_ADDONS"
     else
@@ -270,6 +278,8 @@ cat > "$CONFIG_FILE" << EOF
     "addon_r": $ADDON_R,
     "addon_viz": $ADDON_VIZ,
     "addon_nlp": $ADDON_NLP,
+    "addon_quarto": $ADDON_QUARTO,
+    "addon_chrome": $ADDON_CHROME,
     "discovered_folders": [$FOLDERS_JSON],
     "created_at": "$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S%z)"
 }
@@ -350,7 +360,9 @@ cat > "$DEVCONTAINER_FILE" << DEVCONTAINER_EOF
             "INSTALL_LATEX": "${INSTALL_LATEX}",
             "ADDON_R": "${ADDON_R}",
             "ADDON_VIZ": "${ADDON_VIZ}",
-            "ADDON_NLP": "${ADDON_NLP}"
+            "ADDON_NLP": "${ADDON_NLP}",
+            "ADDON_QUARTO": "${ADDON_QUARTO}",
+            "ADDON_CHROME": "${ADDON_CHROME}"
         }
     },
     "mounts": [
@@ -486,7 +498,7 @@ echo "Configuration:"
 echo "  Python Version:  $PYTHON_VERSION"
 echo "  Package Tier:    $BUILD_TYPE"
 echo "  LaTeX Support:   $INSTALL_LATEX"
-echo "  Add-ons:         R=$ADDON_R, Viz=$ADDON_VIZ, NLP=$ADDON_NLP"
+echo "  Add-ons:         R=$ADDON_R, Viz=$ADDON_VIZ, NLP=$ADDON_NLP, Quarto=$ADDON_QUARTO, Chrome=$ADDON_CHROME"
 echo ""
 echo "Next Steps:"
 echo "  1. Open this folder in VS Code or Antigravity"

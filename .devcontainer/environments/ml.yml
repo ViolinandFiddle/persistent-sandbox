@@ -18,10 +18,7 @@ dependencies:
   - lightgbm # Fast gradient boosting (Microsoft)
 
   # ---------------------------------------------------------------------------
-  # Statistical Modeling
-  # ---------------------------------------------------------------------------
-  - statsmodels # Statistical models, tests, and time series
-  - patsy # Formula interface for statistical models (R-style)
+  # Feature Engineering & Preprocessing
 
   # ---------------------------------------------------------------------------
   # Feature Engineering & Preprocessing

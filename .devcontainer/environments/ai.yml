@@ -29,9 +29,6 @@ dependencies:
   # ---------------------------------------------------------------------------
   - pip
   - pip:
-      # PyArrow - Explicitly pinned to >=16.0.0 to support Python 3.13 and prevent
-      # backtracking to broken ancient versions (which require numpy 1.19).
-      - pyarrow>=16.0.0
       # Core Transformers library - access to thousands of pretrained models
       - transformers>=4.38
       # PyTorch Lightning - structured training loops

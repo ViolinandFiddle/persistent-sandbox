@@ -17,9 +17,7 @@ dependencies:
   - dask-ml # Scalable machine learning with Dask
 
   # ---------------------------------------------------------------------------
-  # Modern DataFrame Libraries (faster than pandas for big data)
-  # ---------------------------------------------------------------------------
-  - polars # Blazing fast DataFrames (Rust-based)
+  # Performance Optimization
 
   # ---------------------------------------------------------------------------
   # Performance Optimization

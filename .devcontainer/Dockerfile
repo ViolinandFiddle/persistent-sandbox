@@ -36,6 +36,8 @@ ARG INSTALL_LATEX=false
 ARG ADDON_R=false
 ARG ADDON_VIZ=false
 ARG ADDON_NLP=false
+ARG ADDON_QUARTO=false
+ARG ADDON_CHROME=false
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Environment Configuration
@@ -52,7 +54,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Build essentials
     build-essential gcc g++ make cmake \
     # Network & security
-    git curl wget openssh-client ca-certificates gnupg2 \
+    git curl wget openssh-client ca-certificates gnupg2 socat iproute2 \
     # Archive tools
     zip unzip tar gzip bzip2 xz-utils \
     # Editors & utilities
@@ -179,6 +181,34 @@ RUN if [ "$ADDON_NLP" = "true" ]; then \
     echo "📦 [Add-on] Installing NLP tools (spaCy, NLTK)..." && \
     mamba env update -n sandbox -f /tmp/environments/addon-nlp.yml && \
     mamba clean -afy; \
+    fi
+
+# ==============================================================================
+# ADD-ON: Quarto & TinyTeX
+# ==============================================================================
+RUN if [ "$ADDON_QUARTO" = "true" ]; then \
+    echo "📦 [Add-on] Installing Quarto & TinyTeX..." && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    evince \
+    && QUARTO_VERSION="1.4.550" \
+    && wget -q https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb \
+    && dpkg -i quarto-${QUARTO_VERSION}-linux-amd64.deb \
+    && rm quarto-${QUARTO_VERSION}-linux-amd64.deb \
+    && quarto install tool tinytex \
+    && rm -rf /var/lib/apt/lists/*; \
+    fi
+
+# ==============================================================================
+# ADD-ON: Google Chrome
+# ==============================================================================
+RUN if [ "$ADDON_CHROME" = "true" ]; then \
+    echo "📦 [Add-on] Installing Google Chrome..." && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    gnupg2 \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+    && apt-get update && apt-get install -y google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*; \
     fi
 
 # ==============================================================================
