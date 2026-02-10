@@ -1,0 +1,14 @@
+{
+    "references": {
+        "Pitzer (1973) Theory": "10.1021/j100621a026",
+        "Example Journal Paper": "DOI_HERE"
+    },
+    "recovery_map": {
+        "Example Journal Paper": [
+            "local_backup_filename.pdf"
+        ]
+    },
+    "overrides": {
+        "Example Journal Paper": "https://example.com/direct/link/to.pdf"
+    }
+}

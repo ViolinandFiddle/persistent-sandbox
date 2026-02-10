@@ -9,6 +9,15 @@
 
 This sandbox provides an isolated environment where AI agents can safely read, write, and execute code **without any risk of accidental Git commits or pushes**. Git operations are blocked inside the container, protecting your remote repositories from unintended changes.
 
+### 🛠️ Built-in Tools
+
+#### **Robust Reference Fetcher** (`/robust_reference_fetcher`)
+A high-reliability acquisition engine for scientific literature. It bypasses common scraping obstacles (bot detection, JS-rendering) to ensure AI agents have access to the latest research.
+- **Zero-Failure Logic**: Sequential fallback from `urllib` to **True Headless Chrome** (`--print-to-pdf`) for bulletproof acquisition.
+- **Smart Recovery**: Automatically scans local directories to recover existing papers before attempting new downloads.
+- **Technical Summarization**: Integrated hooks for generating PhD-level summaries from downloaded PDFs.
+- **Pure Python**: Standard library implementation with minimal dependencies (requires `google-chrome-stable`).
+
 ---
 
 ## ⚡ Quick Start
@@ -104,6 +113,7 @@ Git is **blocked at multiple layers** to prevent accidental commits or pushes:
 │                                                                 │
 │  🛡️ git command → "Git is BLOCKED for your protection"         │
 │  📁 Files are editable, changes persist to host                │
+│  📚 Tools: Robust Reference Fetcher ready in `/robust...`      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -220,6 +230,7 @@ persistent-sandbox/
 ├── setup.ps1                   # Setup script (PowerShell - Windows)
 ├── config.json                 # [Generated] Your configuration
 ├── workspace.code-workspace    # [Generated] Multi-folder workspace
+├── robust_reference_fetcher/   # 🛠️ Built-in: Zero-Failure reference fetcher
 └── README.md                   # This file
 ```
 

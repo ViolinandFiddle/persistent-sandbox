@@ -1,0 +1,6 @@
+# Reference Fetcher Gitignore
+output/*.pdf
+logs/*.md
+__pycache__/
+.DS_Store
+*.log
