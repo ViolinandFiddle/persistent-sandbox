@@ -1,0 +1,14 @@
+# ==============================================================================
+# Docker Build Context Filter
+# ==============================================================================
+# Only send files the Dockerfile actually needs. Without this, every file
+# change in persistent-sandbox/ (Claude logs, config.json, README, etc.)
+# gets sent as build context and can invalidate Docker cache layers.
+# ==============================================================================
+
+# Exclude everything by default
+*
+
+# Include only what the Dockerfile actually COPYs
+!.devcontainer/Dockerfile
+!.devcontainer/environments/*.yml

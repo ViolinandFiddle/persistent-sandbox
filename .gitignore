@@ -13,6 +13,9 @@
 # The Dockerfile is tracked, but devcontainer.json is generated
 .devcontainer/devcontainer.json
 
+# Claude Code local settings are machine-specific (container paths, allowed commands)
+.claude/settings.local.json
+
 # Workspace file is generated with discovered folders
 workspace.code-workspace
 
