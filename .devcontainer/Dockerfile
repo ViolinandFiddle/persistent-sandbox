@@ -38,7 +38,7 @@ ARG ADDON_VIZ=false
 ARG ADDON_NLP=false
 ARG ADDON_QUARTO=false
 ARG ADDON_CHROME=false
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Environment Configuration
 ENV CONDA_DIR=/opt/conda
@@ -51,14 +51,10 @@ ENV SANDBOX_ACTIVE=true
 # SYSTEM PACKAGES
 # ==============================================================================
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Build essentials
     build-essential gcc g++ make cmake \
-    # Network & security
     git curl wget openssh-client ca-certificates gnupg2 socat iproute2 \
-    # Archive tools
     zip unzip tar gzip bzip2 xz-utils \
-    # Editors & utilities
-    vim nano gawk jq htop tree locate dos2unix sudo \
+    vim nano gawk jq htop tree dos2unix sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # ==============================================================================
